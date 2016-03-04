@@ -2,7 +2,7 @@
 using UnityEngine.Networking;
 using System.Collections;
 
-public class CitzenController : NetworkBehaviour {
+public class CitzenControllerOnline: NetworkBehaviour {
 
     NavMeshAgent nma;
 

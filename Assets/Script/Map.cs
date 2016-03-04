@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[System.Serializable]
 public class Map {
 
     //Matrice di Tiles
@@ -36,7 +37,20 @@ public class Map {
     {
         this.Altezza = altezza;
         this.Larghezza = larghezza;
-        tiles = new Tile[larghezza,altezza];
+        tiles = new Tile[larghezza, altezza];
+        for (int x = 0; x < larghezza; x++)
+        {
+            for (int y = 0; y < altezza; y++)
+            {
+                tiles[x, y] = new Tile(this,x,y);
+            }
+        }
+        
+    }
+
+    public Tile getTileAt(int x,int y)
+    {
+        return tiles[x, y];
     }
 
 }

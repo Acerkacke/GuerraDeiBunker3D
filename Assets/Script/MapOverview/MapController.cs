@@ -62,6 +62,12 @@ public class MapController : MonoBehaviour {
 	void Carica(Salvataggio s){
 		Map = new Map(s.Map);
         currSalvataggio = new Salvataggio(s);
+        SpostaVisuale(s.Player.HomeTile);
+    }
+
+    void SpostaVisuale(TilePosition qualeTile)
+    {
+        Camera.main.transform.position = new Vector3(qualeTile.X, Camera.main.transform.position.y, qualeTile.Y - 2);
     }
 
     void CreaMappa()

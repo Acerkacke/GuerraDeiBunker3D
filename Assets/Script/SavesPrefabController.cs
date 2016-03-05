@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class SavesPrefabController : MonoBehaviour {
@@ -55,7 +55,7 @@ public class SavesPrefabController : MonoBehaviour {
 
     private void CaricaSuPlayerPrefs(Salvataggio salva)
     {
-        PlayerPrefs.SetInt("CodiceCorrente",salva.Codice);
+		PlayerPrefs.SetInt("LastPlayed",salva.Codice);
     }
 
 }

@@ -16,7 +16,6 @@ public class Tile {
     //Informazioni
     public enum TileState { Empty, Full}
     TileState stato;
-    Action<Tile> OnStateChangedActions;
     public TileState Stato{
         get {
             return stato;
@@ -29,6 +28,8 @@ public class Tile {
 			}
         }
     }
+    Action<Tile> OnStateChangedActions;
+    //buildings
     TileBuilding tileBuilding;
     public TileBuilding TileBuilding
     {
@@ -36,6 +37,12 @@ public class Tile {
             return tileBuilding;
         }
     }
+    //TilePosition
+    public TilePosition TilePosition
+    {
+        get { return ToTilePosition(); }
+    }
+
     //costruttore
     public Tile(Map m,int x,int y)
     {
@@ -80,5 +87,13 @@ public class Tile {
     public void UnRegisterOnStateChanged(Action<Tile> a)
     {
         OnStateChangedActions -= a;
+    }
+    protected TilePosition ToTilePosition()
+    {
+        return new TilePosition(x,y);
+    }
+    public override string ToString()
+    {
+        return "Tile x:" + x + " y:" + y;
     }
 }

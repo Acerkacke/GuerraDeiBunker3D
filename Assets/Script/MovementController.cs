@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
 
-public class MouseController : MonoBehaviour
+public class MovementController : MonoBehaviour
 {
     public float fastSpeedMultiplier = 2;
     public float keyScrollSpeed = 2;

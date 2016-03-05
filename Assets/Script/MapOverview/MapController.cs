@@ -16,10 +16,16 @@ public class MapController : MonoBehaviour {
     public int larghezza = 25;
     public static MapController Instance;
 
+    Salvataggio currSalvataggio;
+    public Salvataggio Salvataggio {
+        get { return currSalvataggio; }
+    }
+
     private Dictionary<string, GameObject> prefabs = new Dictionary<string, GameObject>();
 
     void PopulatePrefabsDictionary()
     {
+        prefabs.Add("tile", tilePrefab);
         prefabs.Add("Castello", Resources.Load("Prefabs/Castello_prefab") as GameObject);
     }
 
@@ -35,21 +41,28 @@ public class MapController : MonoBehaviour {
         PopulatePrefabsDictionary();
 
 		Salvataggio s = PlayerPrefsX.GetSalvataggio (PlayerPrefs.GetInt("LastPlayed",0));
+
 		if (s == null) {
 			Map = new Map (larghezza, altezza);
 			//salva
 			Salvataggio salvat = new Salvataggio("Nuovo Salvataggio",map);
-			PlayerPrefsX.SetSalvataggio (salvat);
-			PlayerPrefs.SetInt("LastPlayed",salvat.Codice);
+            Salva(salvat);
+            Carica(salvat);
 		} else {
 			Carica(s);
-			PlayerPrefsX.SetSalvataggio (s);
 		}
     }
 
+    void Salva(Salvataggio s)
+    {
+        PlayerPrefsX.SetSalvataggio(s);
+        PlayerPrefs.SetInt("LastPlayed", s.Codice);
+    }
+
 	void Carica(Salvataggio s){
-		Map = s.Map;
-	}
+		Map = new Map(s.Map);
+        currSalvataggio = new Salvataggio(s);
+    }
 
     void CreaMappa()
     {
@@ -79,10 +92,15 @@ public class MapController : MonoBehaviour {
 		string oldname = tile_go.name;
 		Vector3 oldPosition = tile_go.transform.position;
 		Destroy (tile_go);
-		tile_go = (GameObject)Instantiate (prefabs [tile_data.TileBuilding.ObjType]);
-		tile_go.name = oldname;
-		tile_go.transform.position = oldPosition;
-		Debug.Log ("Cambiato stato, adesso sono un " + tile_data.TileBuilding.ObjType);
+        string objType = tile_data.TileBuilding.ObjType;
+        if (objType == null)
+        {
+            objType = "tile";
+        }
+        tile_go = (GameObject)Instantiate(prefabs[objType]);
+        tile_go.name = oldname;
+        tile_go.transform.position = oldPosition;
+        Debug.Log("Cambiato stato, adesso sono un " + objType);
 
     }
 	

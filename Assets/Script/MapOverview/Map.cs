@@ -68,4 +68,9 @@ public class Map {
         return tiles[x, y];
     }
 
+    public override string ToString()
+    {
+        return "Mappa alt:" + altezza + " larg:" + larghezza;
+    }
+
 }

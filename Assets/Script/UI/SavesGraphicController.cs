@@ -24,7 +24,10 @@ public class SavesGraphicController : MonoBehaviour {
 
     void OnEnable()
     {
-        CaricaSalvataggi();
+        if (rectTrans != null)
+        {
+            CaricaSalvataggi();
+        }
     }
 	
     public void CaricaSalvataggi()

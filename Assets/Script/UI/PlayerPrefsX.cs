@@ -44,8 +44,8 @@ public class PlayerPrefsX
 		if (hasToAdd) {
 			SetNSalvataggi ();
 		}
-        Debug.Log("Salvato " + salvataggio.Nome + " con codice " + salvataggio.Codice);
-        Debug.Log("Adesso allora ci saranno " + PlayerPrefs.GetInt("NSalva") + " salvataggi, e l'ultimo di essi ha codice " + PlayerPrefs.GetInt("Salvataggio" + (PlayerPrefs.GetInt("NSalva")-1)));
+        //Debug.Log("Salvato " + salvataggio.Nome + " con codice " + salvataggio.Codice);
+        //Debug.Log("Adesso allora ci saranno " + PlayerPrefs.GetInt("NSalva") + " salvataggi, e l'ultimo di essi ha codice " + PlayerPrefs.GetInt("Salvataggio" + (PlayerPrefs.GetInt("NSalva")-1)));
     }
     private static void SetNSalvataggi()
     {
@@ -103,7 +103,7 @@ public class PlayerPrefsX
         int[] codici = new int[PlayerPrefs.GetInt("NSalva")];
         for (int i = 0; i < codici.Length; i++)
         {
-			Debug.Log(PlayerPrefs.GetInt("Salvataggio" + i));
+			//Debug.Log(PlayerPrefs.GetInt("Salvataggio" + i));
             codici[i] = PlayerPrefs.GetInt("Salvataggio" + i);
         }
         return codici;

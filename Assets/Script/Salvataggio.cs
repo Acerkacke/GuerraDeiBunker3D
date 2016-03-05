@@ -1,60 +1,42 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+using UnityEngine;
+using System.Collections;
 
 [System.Serializable]
-public class Salvataggio {
+public class TileBuilding {
 
-    private string nome;
-    private Data data;
-    private int codice;
-    private Map map;
+    Tile tile;
+    public Tile Tile { get { return tile; } }
+    string objType;
+    public string ObjType { get { return objType; } }
+    int width;
+    int height;
 
-
-    public string Nome { get { return nome; }}
-    public Data Data { get { return data; } }
-    public int Codice { get { return codice; } }
-
-    public Salvataggio(string nome,int codice = 0)
+    protected TileBuilding()
     {
-        this.nome = nome;
-        this.data = new Data();
-        this.map = MapController.Instance.Map;
-        if (codice < 1111)
-        {
-            this.codice = generaCodice();
-        }
-    }
 
-    public int generaCodice()
-    {
-        int cod = Random.Range(1111, 9999);
-        while (!CodiceDisponibile(cod))
-        {
-            cod = Random.Range(1111, 9999);
-        }
-        updateNCodici();
-        return cod;
     }
-
-    private void updateNCodici(int numeroDaSommare = 1)
+    protected TileBuilding(string objType, int width = 1, int height = 1)
     {
-        PlayerPrefs.SetInt("NCodici", PlayerPrefs.GetInt("NCodici") + numeroDaSommare);
+        this.objType = objType;
+        this.width = width;
+        this.height = height;
     }
-
-    public static bool CodiceDisponibile(int codice)
+    protected TileBuilding(Tile tile, TileBuilding tileBuilding)
     {
-        for(int i = 0; i < NCodici(); i++)
-        {
-            if(codice == PlayerPrefs.GetInt("Codici" + i))
-            {
-                return false;
-            }
-        }
-        return true;
+        this.objType = tileBuilding.objType;
+        this.width = tileBuilding.width;
+        this.height = tileBuilding.height;
+        this.tile = tile;
     }
-
-    public static int NCodici()
+    public static TileBuilding CreateTileBuilding(string objType, int width = 1,int height = 1)
     {
-        return PlayerPrefs.GetInt("NCodici");
+        return new TileBuilding(objType,width,height);
     }
+    public static TileBuilding PlaceInstance(Tile tile, TileBuilding tileBuilding)
+    {
+        return new TileBuilding(tile, tileBuilding);
+    }
+	public string ToString(){
+		return objType;
+	}
 }

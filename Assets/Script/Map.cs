@@ -1,4 +1,9 @@
-﻿
+using UnityEngine;
+using System.Collections;
+
+[System.Serializable]
+public class Map {
+
     //Matrice di Tiles
     Tile[,] tiles;
     public Tile[,] Tiles { get { return tiles; } }

@@ -38,7 +38,7 @@ public class PlayerPrefsX
         PlayerPrefs.SetInt("Salvataggio" + getNSalvataggi(), salvataggio.Codice);
         SetNSalvataggi();
         Debug.Log("Salvato " + salvataggio.Nome + " con codice " + salvataggio.Codice);
-        Debug.Log("Adesso allora ci saranno " + PlayerPrefs.GetInt("NSalva") + " salvataggi, e l'ultimo di essi ha codice " + PlayerPrefs.GetInt("Salvataggio" + PlayerPrefs.GetInt("NSalva")));
+        Debug.Log("Adesso allora ci saranno " + PlayerPrefs.GetInt("NSalva") + " salvataggi, e l'ultimo di essi ha codice " + PlayerPrefs.GetInt("Salvataggio" + (PlayerPrefs.GetInt("NSalva")-1)));
     }
     private static void SetNSalvataggi()
     {
@@ -77,7 +77,10 @@ public class PlayerPrefsX
         {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(Application.persistentDataPath + "/" + codiceSalvataggio + ".dat",FileMode.Open);
-            return (Salvataggio)bf.Deserialize(file);
+            Salvataggio s = (Salvataggio)bf.Deserialize(file);
+			file.Close();
+			//Debug.Log(Application.persistentDataPath + "/" + codiceSalvataggio + ".dat");
+			return s;
         }
         else
         {
@@ -98,4 +101,3 @@ public class PlayerPrefsX
         return codici;
     }
 }
-

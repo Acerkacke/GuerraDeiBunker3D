@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+.using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
@@ -19,8 +19,10 @@ public class SavesGraphicController : MonoBehaviour {
         for (int i = 0; i < ns.Length; i++)
         {
             Salvataggio caricato = PlayerPrefsX.GetSalvataggio(ns[i]);
-            Debug.Log("Trovato salvataggio con codice " + caricato.Codice);
-            aggiungiSalvataggio(caricato);
+			if(caricato != null){
+	            Debug.Log("Trovato salvataggio con codice " + caricato.Codice);
+	            aggiungiSalvataggio(caricato);
+			}
         }
     }
 

@@ -1,4 +1,9 @@
-﻿    Map map;
+﻿using UnityEngine;
+using System.Collections.Generic;
+
+public class MapController : MonoBehaviour {
+
+    Map map;
 	public Map Map {
 		get { return map; }
 		protected set{
@@ -81,3 +86,4 @@
 	
 	}
 }
+

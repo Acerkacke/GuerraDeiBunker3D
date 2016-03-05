@@ -4,23 +4,39 @@ using UnityEngine.UI;
 
 public class SavesGraphicController : MonoBehaviour {
 
+    public static SavesGraphicController instance;
     public GameObject savePrefab;
     private RectTransform rectTrans;
     private List<Salvataggio> salvataggi = new List<Salvataggio>();
 
 	void Start () {
+        if(instance != null)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
         rectTrans = gameObject.GetComponent<RectTransform>();
         CaricaSalvataggi();
     }
+
+    void OnEnable()
+    {
+        CaricaSalvataggi();
+    }
 	
-    void CaricaSalvataggi()
+    public void CaricaSalvataggi()
     {
         int[] ns = PlayerPrefsX.GetListaCodiciSalvataggio();
         for (int i = 0; i < ns.Length; i++)
         {
             Salvataggio caricato = PlayerPrefsX.GetSalvataggio(ns[i]);
-            Debug.Log("Trovato salvataggio con codice " + caricato.Codice);
-            aggiungiSalvataggio(caricato);
+			if(caricato != null){
+	            Debug.Log("Trovato salvataggio con codice " + caricato.Codice);
+	            aggiungiSalvataggio(caricato);
+			}
         }
     }
 

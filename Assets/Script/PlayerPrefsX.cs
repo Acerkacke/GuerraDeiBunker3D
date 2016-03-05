@@ -30,15 +30,22 @@ public class PlayerPrefsX
     }
     public static void SetSalvataggio(Salvataggio salvataggio)
     {
+		bool hasToAdd = true;
+		salvataggio = new Salvataggio (salvataggio);
+		if (File.Exists (Application.persistentDataPath + "/" + salvataggio.Codice + ".dat")) {
+			hasToAdd = false;
+		}
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(Application.persistentDataPath + "/" + salvataggio.Codice + ".dat");
 
         bf.Serialize(file,salvataggio);
         file.Close();
         PlayerPrefs.SetInt("Salvataggio" + getNSalvataggi(), salvataggio.Codice);
-        SetNSalvataggi();
+		if (hasToAdd) {
+			SetNSalvataggi ();
+		}
         Debug.Log("Salvato " + salvataggio.Nome + " con codice " + salvataggio.Codice);
-        Debug.Log("Adesso allora ci saranno " + PlayerPrefs.GetInt("NSalva") + " salvataggi, e l'ultimo di essi ha codice " + PlayerPrefs.GetInt("Salvataggio" + PlayerPrefs.GetInt("NSalva")));
+        Debug.Log("Adesso allora ci saranno " + PlayerPrefs.GetInt("NSalva") + " salvataggi, e l'ultimo di essi ha codice " + PlayerPrefs.GetInt("Salvataggio" + (PlayerPrefs.GetInt("NSalva")-1)));
     }
     private static void SetNSalvataggi()
     {
@@ -77,7 +84,10 @@ public class PlayerPrefsX
         {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(Application.persistentDataPath + "/" + codiceSalvataggio + ".dat",FileMode.Open);
-            return (Salvataggio)bf.Deserialize(file);
+            Salvataggio s = (Salvataggio)bf.Deserialize(file);
+			file.Close();
+			//Debug.Log(Application.persistentDataPath + "/" + codiceSalvataggio + ".dat");
+			return s;
         }
         else
         {
@@ -93,6 +103,7 @@ public class PlayerPrefsX
         int[] codici = new int[PlayerPrefs.GetInt("NSalva")];
         for (int i = 0; i < codici.Length; i++)
         {
+			Debug.Log(PlayerPrefs.GetInt("Salvataggio" + i));
             codici[i] = PlayerPrefs.GetInt("Salvataggio" + i);
         }
         return codici;

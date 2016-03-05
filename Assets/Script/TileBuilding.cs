@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TileBuilding : MonoBehaviour {
+[System.Serializable]
+public class TileBuilding {
 
     Tile tile;
     public Tile Tile { get { return tile; } }
@@ -35,4 +36,7 @@ public class TileBuilding : MonoBehaviour {
     {
         return new TileBuilding(tile, tileBuilding);
     }
+	public string ToString(){
+		return objType;
+	}
 }

@@ -9,21 +9,35 @@ public class Salvataggio {
     private int codice;
     private Map map;
 
-
+	public Map Map {get{return map;}}
     public string Nome { get { return nome; }}
     public Data Data { get { return data; } }
     public int Codice { get { return codice; } }
 
-    public Salvataggio(string nome,int codice = 0)
+    public Salvataggio(string nome, Map m = null, int codice = 0)
     {
         this.nome = nome;
         this.data = new Data();
-        this.map = MapController.Instance.Map;
+        if (m != null)
+        {
+            this.map = new Map(m);
+        }
+        else
+        {
+            this.map = new Map();
+        }
         if (codice < 1111)
         {
             this.codice = generaCodice();
         }
     }
+
+	public Salvataggio(Salvataggio s){
+		this.nome = s.nome;
+		this.data = new Data(s.data);
+		this.map = new Map (s.map);
+		this.codice = s.codice;
+	}
 
     public int generaCodice()
     {

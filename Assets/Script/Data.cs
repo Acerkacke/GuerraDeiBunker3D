@@ -37,6 +37,11 @@ public class Data {
         }
     }
 
+	public Data(Data data){
+		this.giorno = data.giorno;
+		this.mese = data.mese;
+	}
+
     public string ToString()
     {
         return giorno + "/" + mese;

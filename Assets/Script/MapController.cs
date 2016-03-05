@@ -4,7 +4,13 @@ using System.Collections.Generic;
 public class MapController : MonoBehaviour {
 
     Map map;
-    public Map Map { get { return map; } }
+	public Map Map {
+		get { return map; }
+		protected set{
+			map = value;
+			CreaMappa();
+		}
+	}
     public GameObject tilePrefab;
     public int altezza = 25;
     public int larghezza = 25;
@@ -26,11 +32,24 @@ public class MapController : MonoBehaviour {
         {
             Destroy(this);
         }
-        PlayerPrefsX.SetSalvataggio(new Salvataggio("La mamma di nardi"));
         PopulatePrefabsDictionary();
-        map = new Map(larghezza,altezza);
-        CreaMappa();
+
+		Salvataggio s = PlayerPrefsX.GetSalvataggio (PlayerPrefs.GetInt("LastPlayed",0));
+		if (s == null) {
+			Map = new Map (larghezza, altezza);
+			//salva
+			Salvataggio salvat = new Salvataggio("Nuovo Salvataggio",map);
+			PlayerPrefsX.SetSalvataggio (salvat);
+			PlayerPrefs.SetInt("LastPlayed",salvat.Codice);
+		} else {
+			Carica(s);
+			PlayerPrefsX.SetSalvataggio (s);
+		}
     }
+
+	void Carica(Salvataggio s){
+		Map = s.Map;
+	}
 
     void CreaMappa()
     {
@@ -44,20 +63,27 @@ public class MapController : MonoBehaviour {
                 tile_go.name = "Tile_" + x + "_" + y;
                 tile_go.transform.position = new Vector3(x,0,y);
 
+				if(tile_data.Stato == Tile.TileState.Full){
+					OnTileStateChanged(tile_data,tile_go);
+				}
+
                 tile_data.RegisterOnStateChanged((tile) => { OnTileStateChanged(tile, tile_go); });
             }
         }
+		//map.getTileAt (0, 3).Occupa (TileBuilding.CreateTileBuilding("Castello"));
+		//Debug.Log (map.getTileAt (2, 2).TileBuilding.ToString());
     }
 
     void OnTileStateChanged(Tile tile_data,GameObject tile_go)
     {
-        Debug.Log("Cambiato stato, adesso sono un " + tile_data.TileBuilding.ObjType);
-        string oldname = tile_go.name;
-        Vector3 oldPosition = tile_go.transform.position;
-        Destroy(tile_go);
-        tile_go = (GameObject)Instantiate(prefabs[tile_data.TileBuilding.ObjType]);
-        tile_go.name = oldname;
-        tile_go.transform.position = oldPosition;
+		string oldname = tile_go.name;
+		Vector3 oldPosition = tile_go.transform.position;
+		Destroy (tile_go);
+		tile_go = (GameObject)Instantiate (prefabs [tile_data.TileBuilding.ObjType]);
+		tile_go.name = oldname;
+		tile_go.transform.position = oldPosition;
+		Debug.Log ("Cambiato stato, adesso sono un " + tile_data.TileBuilding.ObjType);
+
     }
 	
 	void Update () {

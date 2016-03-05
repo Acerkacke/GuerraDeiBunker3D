@@ -23,7 +23,10 @@ public class Tile {
         }
         protected set{
             stato = value;
-            OnStateChangedActions(this);
+			if(OnStateChangedActions != null){
+				Debug.Log("Chiamato OnStateChanged");
+            	OnStateChangedActions(this);
+			}
         }
     }
     TileBuilding tileBuilding;
@@ -39,15 +42,29 @@ public class Tile {
         map = m;
         this.x = x;
         this.y = y;
-        //Stato = TileState.Empty;
+        Stato = TileState.Empty;
     }
+
+	public Tile(Tile tile){
+		this.x = tile.x;
+		this.y = tile.y;
+		if (tile.stato == TileState.Full) {
+			Occupa(tile.tileBuilding);
+		} else {
+			stato = TileState.Empty;
+		}
+	}
 
     //altre funzioni
     
     public void Occupa(TileBuilding tileBuilding)
     {
-        this.tileBuilding = TileBuilding.PlaceInstance(this,tileBuilding);
-        Stato = TileState.Full;
+		if (stato == TileState.Empty) {
+			this.tileBuilding = TileBuilding.PlaceInstance (this, tileBuilding);
+			Stato = TileState.Full;
+		} else {
+			Debug.Log("E' gia' occupato (Tile_" + x + "_" + y + ")");
+		}
     }
     public void UnOccupa()
     {

@@ -72,4 +72,5 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 *.exe
-Builds/player_win_x86.pdb
+
+Builds

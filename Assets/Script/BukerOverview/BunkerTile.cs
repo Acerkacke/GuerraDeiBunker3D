@@ -26,15 +26,15 @@ public class BunkerTile {
             stato = value;
             if (OnStateChangedActions != null)
             {
-                Debug.Log("Chiamato OnStateChanged");
+                //Debug.Log("Chiamato OnStateChanged");
                 OnStateChangedActions(this);
             }
         }
     }
     Action<BunkerTile> OnStateChangedActions;
 
-    BunkerTileBuilding building;
-    public BunkerTileBuilding Building { get { return building; } }
+    BunkerTileBuilding bunkerBuilding;
+    public BunkerTileBuilding BunkerBuilding { get { return bunkerBuilding; } }
 
     public BunkerTile(BunkerMap map, int x, int y)
     {
@@ -42,6 +42,8 @@ public class BunkerTile {
         this.x = x;
         this.y = y;
         Stato = BunkerTileState.Empty;
+        //occupiamola di base con la terra
+        //Occupa(BunkerTileBuilding.CreateTileBuilding("Terra"));
     }
 
     public BunkerTile(BunkerTile bTile)
@@ -56,26 +58,31 @@ public class BunkerTile {
     {
         if (stato == BunkerTileState.Empty)
         {
-            //TODO : Quando hai fatto BunkerTileBuilding torna qua
-            //this.building = BunkerTileBuilding.PlaceInstance(this, building);
+            this.bunkerBuilding = BunkerTileBuilding.PlaceInstance(this, bunkerBuilding);
+            Debug.Log("Adesso sono" + bunkerBuilding);
             Stato = BunkerTileState.Full;
         }
         else {
             Debug.Log("E' gia' occupato (Tile_" + x + "_" + y + ")");
         }
     }
+
     public void UnOccupa()
     {
-        this.building = null;
+        if (bunkerBuilding.OriginTile.Equals(this))
+        {
+            bunkerBuilding.Sbaracca();
+        }
+        this.bunkerBuilding = null;
         Stato = BunkerTileState.Empty;
     }
-    public void RegisterOnStateChanged(Action<Tile> a)
+    public void RegisterOnStateChanged(Action<BunkerTile> a)
     {
         OnStateChangedActions += a;
     }
-    public void UnRegisterOnStateChanged(Action<Tile> a)
+    public void UnRegisterTuttiOnStateChanged()
     {
-        OnStateChangedActions -= a;
+        OnStateChangedActions = null;
     }
     public override string ToString()
     {

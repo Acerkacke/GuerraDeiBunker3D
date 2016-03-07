@@ -84,9 +84,9 @@ public class Tile {
     {
         OnStateChangedActions += a;
     }
-    public void UnRegisterOnStateChanged(Action<Tile> a)
+    public void UnRegisterTuttiOnStateChanged()
     {
-        OnStateChangedActions -= a;
+        OnStateChangedActions = null;
     }
     protected TilePosition ToTilePosition()
     {

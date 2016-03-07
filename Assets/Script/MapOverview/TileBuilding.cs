@@ -36,7 +36,7 @@ public class TileBuilding {
     {
         return new TileBuilding(tile, tileBuilding);
     }
-	public string ToString(){
+	public override string ToString(){
 		return objType;
 	}
 }

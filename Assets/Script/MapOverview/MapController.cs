@@ -40,17 +40,30 @@ public class MapController : MonoBehaviour {
         }
         PopulatePrefabsDictionary();
 
-		Salvataggio s = PlayerPrefsX.GetSalvataggio (PlayerPrefs.GetInt("LastPlayed",0));
+        ControlloSalvataggi();
 
-		if (s == null) {
-			Map = new Map (larghezza, altezza);
-			//salva
-			Salvataggio salvat = new Salvataggio("Nuovo Salvataggio",map);
-            Salva(salvat);
-            Carica(salvat);
-		} else {
-			Carica(s);
-		}
+    }
+
+    void ControlloSalvataggi()
+    {
+        Salvataggio s = PlayerPrefsX.GetSalvataggio(PlayerPrefs.GetInt("LastPlayed", 0));
+
+        if (s == null)
+        {
+            Crea();
+        }
+        else {
+            Carica(s);
+        }
+    }
+
+    void Crea()
+    {
+        Map = new Map(larghezza, altezza);
+        //salva
+        Salvataggio salvat = new Salvataggio("Nuovo Salvataggio", map);
+        Salva(salvat);
+        Carica(salvat);
     }
 
     void Salva(Salvataggio s)
@@ -109,8 +122,5 @@ public class MapController : MonoBehaviour {
         Debug.Log("Cambiato stato, adesso sono un " + objType);
 
     }
-	
-	void Update () {
-	
-	}
+
 }

@@ -61,4 +61,9 @@ public class MainMenuController : MonoBehaviour {
         Debug.Log("Creato salvataggio");
     }
 
+    public void EliminaTutto()
+    {
+        PlayerPrefs.DeleteAll();
+    }
+
 }

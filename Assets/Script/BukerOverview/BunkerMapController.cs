@@ -6,6 +6,8 @@ public class BunkerMapController : MonoBehaviour {
 
     public GameObject tilePrefab;
 
+
+    string nomeBunker = "Nuovo Bunker";
     BunkerMap map;
     public BunkerMap Map
     {
@@ -20,6 +22,12 @@ public class BunkerMapController : MonoBehaviour {
     public static BunkerMapController Instance;
 
     private Dictionary<string, GameObject> prefabs = new Dictionary<string, GameObject>();
+
+    Salvataggio currSalvataggio;
+    public Salvataggio Salvataggio
+    {
+        get { return currSalvataggio; }
+    }
 
     void PopulatePrefabsDictionary()
     {
@@ -38,7 +46,38 @@ public class BunkerMapController : MonoBehaviour {
             Destroy(this);
         }
         PopulatePrefabsDictionary();
+
+        ControlloSalvataggi();
+
         Map = new BunkerMap();
+    }
+
+    void ControlloSalvataggi()
+    {
+        Salvataggio s = PlayerPrefsX.GetSalvataggio(PlayerPrefs.GetInt("LastPlayed", 0));
+
+        if (s != null)
+        {
+            Carica(s);
+        }
+        else {
+            Debug.LogError("Sei arrivato qui senza un salvataggio precedente");
+        }
+    }
+
+
+    void Salva(Salvataggio s)
+    {
+        s.setBunkerMap(map, "nomeBunker");
+        PlayerPrefsX.SetSalvataggio(s);
+        PlayerPrefs.SetInt("LastPlayed", s.Codice);
+    }
+
+    void Carica(Salvataggio s)
+    {
+        nomeBunker = s.NomeBunker;
+        Map = new BunkerMap(s.BunkerMap);
+        currSalvataggio = new Salvataggio(s);
     }
 
     void CreaMappa()

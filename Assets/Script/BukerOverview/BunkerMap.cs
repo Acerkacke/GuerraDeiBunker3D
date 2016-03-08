@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BunkerMap : MonoBehaviour {
+[System.Serializable]
+public class BunkerMap {
     //Matrice di Tiles
     BunkerTile[,] tiles;
     public BunkerTile[,] Tiles { get { return tiles; } }

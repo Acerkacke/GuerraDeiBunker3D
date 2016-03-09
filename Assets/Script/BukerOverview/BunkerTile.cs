@@ -60,7 +60,7 @@ public class BunkerTile {
         if (stato == BunkerTileState.Empty)
         {
             this.bunkerBuilding = BunkerTileBuilding.PlaceInstance(this, bunkerBuilding);
-            Debug.Log("Adesso sono" + bunkerBuilding);
+            Debug.Log("Adesso sono " + bunkerBuilding);
             Stato = BunkerTileState.Full;
         }
         else {

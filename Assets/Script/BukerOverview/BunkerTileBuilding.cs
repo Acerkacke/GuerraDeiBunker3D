@@ -4,7 +4,9 @@ using System.Collections;
 
 [System.Serializable]
 public class BunkerTileBuilding {
-    
+
+    private Prodotto prodotto;
+    public Prodotto Prodotto { get { return prodotto; } }
     BunkerTile originTile;
     public BunkerTile OriginTile { get { return originTile; } }
     string objType;
@@ -18,11 +20,12 @@ public class BunkerTileBuilding {
     {
 
     }
-    protected BunkerTileBuilding(string objType, int width = 1, int height = 1)
+    protected BunkerTileBuilding(string objType,Prodotto prodotto, int width = 1, int height = 1)
     {
         this.objType = objType;
         this.width = width;
         this.height = height;
+        this.prodotto = prodotto;
     }
     protected BunkerTileBuilding(BunkerTile originTile, BunkerTileBuilding tileBuilding)
     {
@@ -30,21 +33,22 @@ public class BunkerTileBuilding {
         this.width = tileBuilding.width;
         this.height = tileBuilding.height;
         this.originTile = originTile;
+        this.prodotto = tileBuilding.prodotto;
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
                 if (x != 0 || y != 0)
                 {
-                    BunkerMapController.Instance.Map.getTileAt(x + originTile.X, y + OriginTile.Y).Occupa(CreateTileBuilding("tile"));
-                    Debug.Log("Ho occupato " + (x + originTile.X) + " - " + (y + OriginTile.Y));
+                    BunkerMapController.Instance.Map.getTileAt(x + originTile.X, y + OriginTile.Y).Occupa(CreateTileBuilding(null,Prodotto.Null));
+                    Debug.Log("Ho occupato " + (x + originTile.X) + " - " + (y + OriginTile.Y) + " per riempire l'oggetto più grande di uno");
                 }
             }
         }
     }
-    public static BunkerTileBuilding CreateTileBuilding(string objType, int width = 1, int height = 1)
+    public static BunkerTileBuilding CreateTileBuilding(string objType,Prodotto prod, int width = 1, int height = 1)
     {
-        return new BunkerTileBuilding(objType, width, height);
+        return new BunkerTileBuilding(objType,prod, width, height);
     }
     public static BunkerTileBuilding PlaceInstance(BunkerTile originTile, BunkerTileBuilding tileBuilding)
     {
@@ -90,4 +94,13 @@ public class BunkerTileBuilding {
     {
         return objType;
     }
+}
+
+public enum Prodotto
+{
+    Null,
+    Energia,
+    Acqua,
+    Ossigeno,
+
 }

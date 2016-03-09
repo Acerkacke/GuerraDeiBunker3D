@@ -34,11 +34,10 @@ public class BunkerTileInspectorEditor : Editor
         }
         else
         {
-            EditorGUILayout.Space();
             if (GUILayout.Button("Atterra"))
             {
                 //Debug.Log("Schiacciato atterra");
-                tile.Occupa(BunkerTileBuilding.CreateTileBuilding("Terra"));
+                tile.Occupa(BunkerMapController.Instance.prefabs["Terra"].BunkerTileBuilding);
             }
         }
     }

@@ -21,7 +21,7 @@ public class BunkerMapController : MonoBehaviour {
 
     public static BunkerMapController Instance;
 
-    private Dictionary<string, GameObject> prefabs = new Dictionary<string, GameObject>();
+    public Dictionary<string, BunkerBuilding> prefabs = new Dictionary<string, BunkerBuilding>();
 
     Salvataggio currSalvataggio;
     public Salvataggio Salvataggio
@@ -29,12 +29,12 @@ public class BunkerMapController : MonoBehaviour {
         get { return currSalvataggio; }
     }
 
-    void PopulatePrefabsDictionary()
+    void PopulaPrefabs()
     {
-        prefabs.Add("tile", tilePrefab);
-        prefabs.Add("Terra", Resources.Load("Prefabs/BloccoDiTerra") as GameObject);
-        prefabs.Add("TrePerDue", Resources.Load("Prefabs/3x2") as GameObject);
+        prefabs.Add("TrePerDue",new BunkerBuilding(Resources.Load("Prefabs/3x2") as GameObject,null,BunkerTileBuilding.CreateTileBuilding("TrePerDue",Prodotto.Energia)));
+        prefabs.Add("Terra", new BunkerBuilding(Resources.Load("Prefabs/Terra") as GameObject, null, BunkerTileBuilding.CreateTileBuilding("Terra", Prodotto.Null)));
     }
+
     void Awake()
     {
         if (Instance == null)
@@ -45,11 +45,8 @@ public class BunkerMapController : MonoBehaviour {
         {
             Destroy(this);
         }
-        PopulatePrefabsDictionary();
-
+        PopulaPrefabs();
         ControlloSalvataggi();
-
-        Map = new BunkerMap();
     }
 
     void ControlloSalvataggi()
@@ -102,7 +99,7 @@ public class BunkerMapController : MonoBehaviour {
                 tile_data.RegisterOnStateChanged((tile) => { tile_go = OnBunkerTileStateChanged(tile, tile_go); });
             }
         }
-        map.getTileAt (0, 3).Occupa (BunkerTileBuilding.CreateTileBuilding("TrePerDue",2,3));
+        map.getTileAt (0, 3).Occupa (BunkerTileBuilding.CreateTileBuilding("TrePerDue",Prodotto.Energia,2,3));
         //Debug.Log (map.getTileAt (2, 2).TileBuilding.ToString());
     }
 
@@ -110,33 +107,25 @@ public class BunkerMapController : MonoBehaviour {
     {
         string oldname = tile_go.name;
         Vector3 oldPosition = tile_go.transform.position;
-
         GameObject oldGo = tile_go;
-        string objType = null;
-        if (tile_data.BunkerBuilding == null)
+        Destroy(oldGo);
+
+        if (tile_data.BunkerBuilding == null || tile_data.BunkerBuilding.ObjType == null || tile_data.BunkerBuilding.ObjType == "tile")
         {
-            objType = "tile";
+            tile_go = (GameObject)Instantiate(tilePrefab);
         }
-        else {
-            if (tile_data.BunkerBuilding.ObjType != null)
-            {
-                objType = tile_data.BunkerBuilding.ObjType;
-            }
-            else
-            {
-                objType = "tile";
-            }
+        else
+        {
+            tile_go = (GameObject)Instantiate(prefabs[tile_data.BunkerBuilding.ObjType].GameObject);
         }
-        tile_go = (GameObject)Instantiate(prefabs[objType]);
+
         tile_go.name = oldname;
         tile_go.transform.position = oldPosition;
 
         BunkerTileInspector bti = tile_go.AddComponent<BunkerTileInspector>();
         bti.x = tile_data.X;
         bti.y = tile_data.Y;
-
-        Destroy(oldGo);
-
+        
         return tile_go;
 
     }

@@ -59,12 +59,30 @@ public class BunkerTile {
     {
         if (stato == BunkerTileState.Empty)
         {
+            if(bunkerBuilding.Height > 1 || bunkerBuilding.Width > 1)
+            {
+                Debug.Log("Controllo se ha tutti i posti liberi");
+                for(int i = y; i < bunkerBuilding.Height+y; i++)
+                {
+                    //Debug.Log("Riga numero " + i);
+                    for (int j = x; j < bunkerBuilding.Width+x; j++)
+                    {
+                        if(map.getTileAt(j,i).stato == BunkerTileState.Full)
+                        {
+                            Debug.Log("E' già occupato da qualcos'altro questo blocco che ee' piu grande di uno");
+                            return;
+                        }
+                    }
+                }
+            }
             this.bunkerBuilding = BunkerTileBuilding.PlaceInstance(this, bunkerBuilding);
             Debug.Log("Adesso sono " + bunkerBuilding);
             Stato = BunkerTileState.Full;
+            return;
         }
         else {
             Debug.Log("E' gia' occupato (Tile_" + x + "_" + y + ")");
+            return;
         }
     }
 

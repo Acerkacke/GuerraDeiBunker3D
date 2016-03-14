@@ -31,7 +31,7 @@ public class BunkerMapController : MonoBehaviour {
 
     void PopulaPrefabs()
     {
-        prefabs.Add("TrePerDue",new BunkerBuilding(Resources.Load("Prefabs/3x2") as GameObject,null,BunkerTileBuilding.CreateTileBuilding("TrePerDue",Prodotto.Energia)));
+        prefabs.Add("SmallReactor",new BunkerBuilding(Resources.Load("Prefabs/SmallReactor") as GameObject,null,BunkerTileBuilding.CreateTileBuilding("SmallReactor", Prodotto.Energia,2,2)));
         prefabs.Add("Terra", new BunkerBuilding(Resources.Load("Prefabs/Terra") as GameObject, null, BunkerTileBuilding.CreateTileBuilding("Terra", Prodotto.Null)));
     }
 
@@ -86,7 +86,7 @@ public class BunkerMapController : MonoBehaviour {
                 BunkerTile tile_data = map.getTileAt(x, y);
 
                 GameObject tile_go = Instantiate(tilePrefab);
-                tile_go.name = "BunkerTile_" + x + "_" + y;
+                tile_go.name = "BunkerTile_" + x + "_" + y + "-";
                 tile_go.transform.position = new Vector3(x, 0, y);
                 BunkerTileInspector bti = tile_go.AddComponent<BunkerTileInspector>();
                 bti.x = x;
@@ -99,13 +99,12 @@ public class BunkerMapController : MonoBehaviour {
                 tile_data.RegisterOnStateChanged((tile) => { tile_go = OnBunkerTileStateChanged(tile, tile_go); });
             }
         }
-        map.getTileAt (0, 3).Occupa (BunkerTileBuilding.CreateTileBuilding("TrePerDue",Prodotto.Energia,2,3));
+        map.getTileAt (0, 3).Occupa (prefabs["SmallReactor"].BunkerTileBuilding);
         //Debug.Log (map.getTileAt (2, 2).TileBuilding.ToString());
     }
 
     GameObject OnBunkerTileStateChanged(BunkerTile tile_data, GameObject tile_go)
     {
-        string oldname = tile_go.name;
         Vector3 oldPosition = tile_go.transform.position;
         GameObject oldGo = tile_go;
         Destroy(oldGo);
@@ -119,7 +118,7 @@ public class BunkerMapController : MonoBehaviour {
             tile_go = (GameObject)Instantiate(prefabs[tile_data.BunkerBuilding.ObjType].GameObject);
         }
 
-        tile_go.name = oldname;
+        tile_go.name = "BunkerTile_" + tile_data.X + "_" + tile_data.Y + "-" + tile_data.BunkerBuilding;
         tile_go.transform.position = oldPosition;
 
         BunkerTileInspector bti = tile_go.AddComponent<BunkerTileInspector>();

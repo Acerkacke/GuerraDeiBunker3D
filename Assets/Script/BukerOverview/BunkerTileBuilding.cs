@@ -40,8 +40,8 @@ public class BunkerTileBuilding {
             {
                 if (x != 0 || y != 0)
                 {
-                    BunkerMapController.Instance.Map.getTileAt(x + originTile.X, y + OriginTile.Y).Occupa(CreateTileBuilding(null,Prodotto.Null));
-                    Debug.Log("Ho occupato " + (x + originTile.X) + " - " + (y + OriginTile.Y) + " per riempire l'oggetto più grande di uno");
+                    BunkerMapController.Instance.Map.getTileAt(x + originTile.X, y + OriginTile.Y).Occupa(CreateTileBuilding("tile",Prodotto.Null,1,1));
+                    Debug.Log("Ho occupato perche' sono piu grande di 1 :" + (x + originTile.X) + " - " + (y + OriginTile.Y) + " per riempire l'oggetto più grande di uno");
                 }
             }
         }
